@@ -1,6 +1,9 @@
-
+stages: 
+  - build
+  - test
 
 build website:
+  stage: build
   image: node:20
   script:
     - npm install
@@ -9,3 +12,9 @@ build website:
   artifacts:
     paths:
       - public/
+
+Test artifact:
+  stage: test
+  script:
+    - grep -i "gatsby" ./public/index.html
+    - grep "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx" ./public/index.html
