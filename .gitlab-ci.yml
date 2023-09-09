@@ -37,7 +37,9 @@ Deploy to surge:
     - surge --project ./public --domain blueberry1.surge.sh
 
 Deployment tests:  
+  image: alpine
   stage: deployment tests
   script:
+    - apk add --no-cache curl
     - curl "https://blueberry1.surge.sh/" | grep -i "Tutorial" 
   
