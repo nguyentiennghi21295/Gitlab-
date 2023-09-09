@@ -46,7 +46,7 @@ deploy staging:
   stage: deploy staging
   environment:
     name: staging
-    url:http://blueberry1-staging.surge.sh
+    url: http://blueberry1-staging.surge.sh
   script:
     - npm install --global surge
     - surge --project ./public --domain blueberry1-staging.surge.sh
@@ -55,7 +55,7 @@ deploy production:
   stage: deploy production
   environment:
     name: production
-    url:http://blueberry1.surge.sh
+    url: http://blueberry1.surge.sh
   script:
     - npm install --global surge
     - surge --project ./public --domain blueberry1.surge.sh
