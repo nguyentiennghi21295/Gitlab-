@@ -18,4 +18,12 @@ Test artifact:
   stage: test
   script:
     - grep -q -i "gatsby" ./public/index.html
-    - grep -q "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx" ./public/index.html
+
+Test website:
+  image: node 
+  stage: test
+  script: 
+    - npm install
+    - npm install -g gatsby-cli
+    - gatsby serve
+    - curl "http://localhost:9000" | grep -i -q "gatsby"
