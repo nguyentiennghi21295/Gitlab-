@@ -37,7 +37,7 @@ Deploy to surge:
     - surge --project ./public --domain blueberry1.surge.sh
 
 Deployment tests:  
-  stage: Deployment tests
+  stage: deployment tests
   script:
     - curl "https://blueberry1.surge.sh/" | grep -i "Tutorial" 
   
