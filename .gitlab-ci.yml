@@ -14,7 +14,8 @@ build website:
       - public/
 
 Test artifact:
+  image: alpine
   stage: test
   script:
-    - grep -i "gatsby" ./public/index.html
-    - grep "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx" ./public/index.html
+    - grep -q -i "gatsby" ./public/index.html
+    - grep -q "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx" ./public/index.html
