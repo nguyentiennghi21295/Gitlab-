@@ -3,6 +3,7 @@ stages:
   - build
   - test
   - deploy
+  - deployment tests
 
 build website:
   stage: build
@@ -34,4 +35,9 @@ Deploy to surge:
   script:
     - npm install --global surge
     - surge --project ./public --domain blueberry1.surge.sh
+
+Deployment tests:  
+  stage: Deployment tests
+  script:
+    - curl "https://blueberry1.surge.sh/" | grep -i "Tutorial" 
   
