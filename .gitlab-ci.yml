@@ -18,6 +18,9 @@ variables:
 
 build website:
   stage: build
+  only:
+    - main
+    - merge_requests
   cache:
     key: ${CI_COMMIT_REF_SLUG}
     paths:
@@ -35,11 +38,17 @@ build website:
 Test artifact:
   image: alpine
   stage: test
+  only:
+    - main
+    - merge_requests
   script:
     - grep -q -i "gatsby" ./public/index.html
 
 Test website:
   stage: test
+  only:
+    - master
+    - merge_requests
   script: 
     - npm install
     - npm install -g gatsby-cli
@@ -61,6 +70,8 @@ deploy review:
 
 stop review:
   stage: deploy review
+  only:
+    - merge_requests
   variables:
     GIT_STRATEGY: none
   script:
