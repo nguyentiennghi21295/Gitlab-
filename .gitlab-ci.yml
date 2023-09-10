@@ -47,7 +47,7 @@ Test artifact:
 Test website:
   stage: test
   only:
-    - master
+    - main
     - merge_requests
   script: 
     - npm install
