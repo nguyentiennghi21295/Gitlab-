@@ -66,8 +66,10 @@ deploy production:
     - main
   # when: manual
   # allow_failure: false
-  script:
+  before_script:
+    - echo "deploying to production"
     - npm install --global surge
+  script:
     - surge --project ./public --domain $PRODUCTION_DOMAIN
 
 Deployment tests:  
