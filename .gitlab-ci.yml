@@ -2,6 +2,7 @@ image : node:20
 stages: 
   - build
   - test
+  - deploy review
   - deploy staging
   - deploy production
   - production tests
@@ -17,6 +18,9 @@ variables:
 
 build website:
   stage: build
+  only:
+    - main
+    - merge_requests
   cache:
     key: ${CI_COMMIT_REF_SLUG}
     paths:
@@ -34,17 +38,50 @@ build website:
 Test artifact:
   image: alpine
   stage: test
+  only:
+    - main
+    - merge_requests
   script:
     - grep -q -i "gatsby" ./public/index.html
 
 Test website:
   stage: test
+  only:
+    - master
+    - merge_requests
   script: 
     - npm install
     - npm install -g gatsby-cli
     - gatsby serve & 
     - sleep 10
     - curl "http://localhost:9000" | grep -i -q "gatsby"
+
+deploy review:
+  stage: deploy review
+  only:
+    - merge_requests
+  environment:
+    name: review/$CI_COMMIT_REF_NAME
+    url: https://blueberry1-$CI_ENVIRONMENT_SLUG.surge.sh
+    on_stop: stop review
+  script:
+    - npm install --global surge
+    - surge --project ./public --domain blueberry1-$CI_ENVIRONMENT_SLUG.surge.sh
+
+stop review:
+  stage: deploy review
+  only:
+    - merge_requests
+  variables:
+    GIT_STRATEGY: none
+  script:
+    - echo "Steps to remove review app"
+    - npm install --global surge
+    - surge teardown blueberry1-$CI_ENVIRONMENT_SLUG.surge.sh
+  when: manual
+  environment:
+    name: review/$CI_COMMIT_REF_NAME
+    action: stop
 
 deploy staging:  
   stage: deploy staging
