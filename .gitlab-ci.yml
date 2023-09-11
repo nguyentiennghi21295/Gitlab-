@@ -83,19 +83,31 @@ stop review:
     name: review/$CI_COMMIT_REF_NAME
     action: stop
 
-deploy staging:  
-  stage: deploy staging
-  environment:
-    name: staging
-    url: http://${STAGING_DOMAIN}
+.deploy_template: &deploy
   only:
     - main
   script:
     - npm install --global surge
-    - surge --project ./public --domain blueberry1-staging.surge.sh
+    - surge --project ./public --domain $DOMAIN
+  environment:
+    name: staging
+    url: http://${DOMAIN}
+
+
+deploy staging: 
+  <<: *deploy 
+  stage: deploy staging
+  variables:
+    DOMAIN: ${STAGING_DOMAIN}
+  environment:
+    name: staging
+
 
 deploy production:  
+  <<: *deploy
   stage: deploy production
+  variables: 
+    DOMAIN: $PRODUCTION_DOMAIN
   environment:
     name: production
     url: http://$PRODUCTION_DOMAIN
